@@ -1,0 +1,3 @@
+node_modules/
+venv/
+**/backend/*.cpython-38.pyc
