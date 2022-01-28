@@ -1,13 +1,143 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html, body {
+    margin: 2rem;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#title {
+    position: absolute;
+    left: 16rem;
+    font-size: 3rem;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.module-box {
+  border: solid purple;
+  border-radius: 2rem;
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: fit-content;
+}
+
+input {
+    margin: 1rem 0 !important;
+}
+
+
+#balance {
+    max-width: 200px;
+    overflow: hidden;
+    position: absolute;
+}
+
+#deposit {
+    width: 300px;
+    margin-left: 1rem;
+    position: absolute;
+    left: 14rem;
+    top: 9rem
+}
+
+#deposit-inp {
+    display: inline-block;
+    position: absolute;
+    max-width: 100px;
+    margin-left: 1rem;
+}
+
+#transaction-hub {
+    position: absolute;
+    top: 23rem;
+}
+
+#transaction-container {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+#deposit-btn {
+    max-width: 200px;
+    margin-left: 1rem;
+}
+
+.dropdown {
+    margin-top: 0.75rem;
+    margin-right: 0;
+    height: 3rem;
+}
+
+.dropdown-content {
+    visibility: hidden;
+    position: absolute;
+    display: flex;
+    align-content: left;
+    background-color: #fff;
+    border: solid 2pxrgb(131, 210, 236)e;
+    box-shadow: var(--shadow-2);
+    z-index: -1;
+}
+
+.dropdown-content .dropdown-item {
+    color: black;
+    background-color: #f1f1f1;
+    height: 1rem;
+    margin-top: 0;
+    border-style: none;
+}
+
+.dropdown-button{
+    font-size: 16px;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    text-decoration: underline;
+}
+
+.dropdown-content li {
+    margin-bottom: 0;
+    margin-left: -1rem;
+    cursor: pointer;
+    background-color: #fff;
+
+}
+
+.dropdown-content li:hover {
+    margin-bottom: 0;
+    cursor: pointer;
+    background-color: #f1f1f1b0;
+}
+
+@keyframes growOut {
+    0% { 
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.dropdown-content li:hover .dropdown-content,
+.dropdown:focus .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown:hover .dropdown-content,
+.dropdown:hover .dropdown-content,
+.login-navbar:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+    animation: growOut 350ms ease-in-out forwards;
+    transform-origin: top center;
 }

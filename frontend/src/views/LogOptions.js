@@ -3,7 +3,7 @@ import SignUp from '../components/SignUp';
 import Login from '../components/Login';
 
 const LogOptions = () => {
-  const [showLogin, setShowLogin] = React.useState();
+  const [showLogin, setShowLogin] = React.useState(true);
 
   return (
     <div>

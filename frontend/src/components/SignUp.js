@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { Form, Button, Col } from 'react-bootstrap';
 import UserContext from '../context/UserContext';
-import urlUtils from '../hooks/urlUtils';
 import userUtils from '../hooks/userUtils';
-import '../index.css';
+import AppContext from '../context/AppContext';
 
 const SignUp = () => {
   const { setUser } = React.useContext(UserContext);
+  const { setIsLoggedIn } = React.useContext(AppContext);
+
   const [account, setAccount] = useState({
     firstname: '',
-    lastname: '',
     username: '',
     email: '',
     password: '',
@@ -17,7 +18,6 @@ const SignUp = () => {
   const [wrongPassword, setWrongPassword] = useState(false);
   const [errorMessages, setErrorMessages] = useState({
     firstname: false,
-    lastname: false,
     username: false,
     email: false,
     password: false,
@@ -28,17 +28,12 @@ const SignUp = () => {
   const validate = () => {
     let isValid = true;
     let firstname = false;
-    let lastname = false;
     let username = false;
     let email = false;
     let password = false;
     if (account.firstname === '') {
       isValid = false;
       firstname = true;
-    }
-    if (account.lastname === '') {
-      isValid = false;
-      lastname = true;
     }
     if (account.username === '') {
       isValid = false;
@@ -55,7 +50,6 @@ const SignUp = () => {
     setErrorMessages({
       ...errorMessages,
       firstname,
-      lastname,
       username,
       email,
       password,
@@ -66,7 +60,7 @@ const SignUp = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const {
-      firstname, lastname, username, email, password, password2,
+      firstname, username, email, password, password2,
     } = account;
     if (password !== password2) {
       setWrongPassword(true);
@@ -75,11 +69,11 @@ const SignUp = () => {
     if (!validate()) return;
     try {
       const res = await fetch(
-        `/api/user?firstname=${firstname}&lastname=${lastname}&email=${email}&username=${username}&password=${password}`,
+        `/api/user?firstname=${firstname}&email=${email}&username=${username}&password=${password}`,
         { method: 'PUT' },
       );
       switch (res.status) {
-        case 401:
+        case 403:
           setErrorMessages(await res.json());
           break;
         case 200:
@@ -87,7 +81,7 @@ const SignUp = () => {
           const { user } = await res.json();
           setUser(user);
           userUtils.cookieLogIn(user);
-          urlUtils.goToUrl('profile');
+          setIsLoggedIn(true);
           break;
         default:
       }
@@ -119,46 +113,41 @@ const SignUp = () => {
   };
 
   return (
-    <article className="grid">
-      <div className="inputs-box">
-        <h1>Registrate</h1>
-        <form onSubmit={submitHandler}>
-          <label htmlFor="firstname">
+    <div className="center">
+      <Form className="module-box" onSubmit={submitHandler}>
+        <Col>
+          <h1>Registrate</h1>
+          <Form.Label htmlFor="firstname">
             Nombre
-            <input type="text" id="firstname" name="firstname" onChange={changeHandler} value={account.firstname} />
-          </label>
+            <Form.Control className="input" type="text" id="firstname" name="firstname" onChange={changeHandler} value={account.firstname} />
+          </Form.Label>
           {errorMessages.firstname && <p className="error-text">El campo Nombre no puede quedar vacío</p>}
-          <label htmlFor="lastname">
-            Apellido
-            <input type="text" id="lastname" name="lastname" onChange={changeHandler} value={account.lastname} />
-          </label>
-          {errorMessages.lastname && <p className="error-text">El campo Apellido no puede quedar vacío</p>}
-          <label htmlFor="username">
+          <Form.Label htmlFor="username">
             Nombre de usuario
-            <input type="text" id="username" name="username" onChange={changeHandler} value={account.username} />
-          </label>
+            <Form.Control className="input" type="text" id="username" name="username" onChange={changeHandler} value={account.username} />
+          </Form.Label>
           {errorMessages.usernameExists && <p className="error-text">{errorMessages.usernameExists}</p>}
           {errorMessages.username && <p className="error-text">El campo Nombre de usuario no puede quedar vacío</p>}
-          <label htmlFor="email">
+          <Form.Label htmlFor="email">
             Email
-            <input type="email" id="email" name="email" onChange={changeHandler} value={account.email} />
-          </label>
+            <Form.Control className="input" type="email" id="email" name="email" onChange={changeHandler} value={account.email} />
+          </Form.Label>
           {errorMessages.emailExists && <p className="error-text">{errorMessages.emailExists}</p>}
           {errorMessages.email && <p className="error-text">El campo Email no puede quedar vacío</p>}
-          <label htmlFor="password">
+          <Form.Label htmlFor="password">
             Contraseña
-            <input type="password" id="password" name="password" onChange={changeHandler} value={account.password} />
-          </label>
+            <Form.Control className="input" type="password" id="password" name="password" onChange={changeHandler} value={account.password} />
+          </Form.Label>
           {errorMessages.password && <p className="error-text">El campo Contraseña no puede quedar vacío</p>}
-          <label htmlFor="password2">
+          <Form.Label htmlFor="password2">
             Repita su contraseña
-            <input type="password" id="password2" name="password2" onChange={changeHandler} value={account.password2} />
-          </label>
+            <Form.Control className="input" type="password" id="password2" name="password2" onChange={changeHandler} value={account.password2} />
+          </Form.Label>
           {wrongPassword && <p className="error-text">Las contraseñas no coinciden</p>}
-          <button type="submit" onClick={submitHandler}>Enviar</button>
-        </form>
-      </div>
-    </article>
+          <Button type="submit" onClick={submitHandler}>Enviar</Button>
+        </Col>
+      </Form>
+    </div>
   );
 };
 

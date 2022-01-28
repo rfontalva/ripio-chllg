@@ -1,14 +1,17 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
 import UserContext from '../context/UserContext';
+import AppContext from '../context/AppContext';
 
 const Balance = () => {
-  const [user] = React.useContext(UserContext);
-  const [balance, setBalance] = React.useState({ btc: 0, ars: 0, usd: 0 });
+  const { newDeposit } = React.useContext(AppContext);
+  const { user } = React.useContext(UserContext);
+  const [balance, setBalance] = React.useState({});
 
   const getBalance = async () => {
     try {
       const res = await fetch(`/api/balance?username=${user}`);
-      setBalance(res);
+      setBalance(await res.json());
     } catch (e) {
       throw new Error(e);
     }
@@ -16,16 +19,28 @@ const Balance = () => {
 
   React.useEffect(() => {
     getBalance();
-  }, []);
+  }, [newDeposit]);
 
   return (
-    <div>
+    <Container className="module-box" id="balance">
       <h3>
         Hola,
-        {user}
+        {` ${user}`}
       </h3>
-      <div>{balance}</div>
-    </div>
+      <div>
+        {Object.keys(balance).map((key) => (
+          <>
+            <h5>
+              {key}
+              :
+            </h5>
+            {key === 'BTC'
+              ? <p>{balance[key]}</p>
+              : <p>{`$${balance[key]}`}</p>}
+          </>
+        ))}
+      </div>
+    </Container>
   );
 };
 
