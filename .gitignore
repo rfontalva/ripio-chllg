@@ -2,3 +2,5 @@ node_modules/
 venv/
 **/backend/*.cpython-38.pyc
 .vscode/
+__pycache__/
+settings.json

@@ -95,7 +95,5 @@ def get_transactions():
 
 @api.route('/test')
 def test():
-    u = User.get_by_username('rami')
-    wallet = Wallet()
-    wallet.create_wallet(u)
-    return wallet.key
+    req = request.headers.get('jochu')
+    return req
